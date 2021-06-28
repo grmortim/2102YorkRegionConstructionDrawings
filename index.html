@@ -1,3 +1,5 @@
+<!-- HTML and CSS stylesheet adapted from W3 SCHOOLS template. 
+    Can be found at this url https://www.w3schools.com/w3css/w3css_templates.asp -->
 <!DOCTYPE html>
 <html>
 <title>York Region Construction Drawings Project</title>
@@ -26,10 +28,15 @@ body, html {
 <body>
 
 <!-- Links -->
-<div class="w3-top">
-  <div class="w3-row w3-padding w3-blue">
+<div class="w3-top" style= "position: fixed; margin-top: 0px;">
     <div class="w3-col s3">
       <a href="#" class="w3-button w3-block w3-blue">PROJECT OVERVIEW</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#about" class="w3-button w3-block w3-blue">METHODOLOGY</a>
+    </div>
+    <div class="w3-col s3">
+      <a href="#us" class="w3-button w3-block w3-blue">OUR TEAM</a>
     </div>
     <div class="w3-col s3">
       <a href="https://luna.flemingcollege.ca/Geocortex/WebViewer/?app=74b05ac8a9af4ea5b459583e04ee23a2" class="w3-button w3-block w3-blue">FINAL PRODUCT</a>
@@ -55,7 +62,7 @@ body, html {
 
 <!-- About Container -->
 <div class="w3-container" id="about">
-  <div class="w3-content" style="max-width:700px">
+  <div class="w3-content" style="max-width:900px">
     <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">ABOUT THE PROJECT</span></h5>
     <p>
         The Regional Municipality of York, located in the Greater Toronto Area, asked our team to develop a web map
@@ -71,70 +78,104 @@ body, html {
 
 <!-- Objectives -->
 <div class="w3-container w3-sand" id="about">
-    <div class="w3-content" style="max-width:700px">
-      <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">PROJECT DELIVERABLES</span></h5>
+    <div class="w3-content" style="max-width:900px">
+      <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">PROJECT METHODOLOGY</span></h5>
+
+      <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Attribute Extraction</span></h6>
       
-      <p>The objective of this project was to develop a web-based solution that will transform the current 
-          road construction drawing retrieval process to one that is better organized, more efficient, 
-          and easily accessible. To meet this requirement thorough development of attribute extraction 
-          and georeferencing of engineering drawings would be required. For the project to be successful 
-          and based on the requirements outlined by York Region the team outlined the following objectives 
-          as requirements for a successful solution.  
-  
-          <p><b>(1) </b>Develop workflows for GIS technical staff to extract attributes and boundaries from construction drawings. The process requires a flexible approach to dealing with a wide range of engineering drawings authored by multiple construction firms while being able to handle large datasets.  
+      <p>The attribute extraction process focused on the data available directly from the file name of each PDF file 
+        within the project folders. A programmatic approach was selected as most effective as the single layered static images 
+        prevented any other form of attribute extraction. With the drawings coming from different engineering companies, writing a 
+        Python script allowed for a flexible approach that was needed to ensure all attributes were being captured for each project. 
+        A dictionary of key:value pairs which matches the layer fields was created for each PDF and the values NULL was utilized for the 
+        instances where the fields vary across the different construction packages. Once the valued attributes are extracted from a PDF file, 
+        a new row with that information is inserted into a feature class and given a basic geometry in preparation for the geometry extraction process.  
+        </p>
+        <div class="w3-center" > 
+          <img src="photos/storespatial.jpg" alt="Workflow" style="width:60%">
+      </div>
+
+      <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Geometry Extraction</span></h6>
+          <p>Through exploration of the CAD drawings, features outlining construction drawing boundaries were manually extracted and converted 
+            to features loaded in ArcPro. The features were used to create feature classes at the construction drawing boundary scale. Using the 
+            minimum bounding extents of these feature classes, feature classes for the extent of the sub-projects each of those drawings belonged 
+            to were created. Once this process was repeated for each drawing in a project, the minimum bounding extents for the sub-project feature 
+            classes were used to create an extent for the entire project. This process was repeated for each project provided.  
           </p>
 
           <div class="w3-center" > 
-            <img src="photos/workflow.png" alt="Workflow" style="width:75%">
+            <img src="photos/GeometryExtraction.png" alt="Workflow" style="width:60%">
         </div>
 
-          <p><b>(2) </b>Store new spatial data in an easy to access format, hosted online. The construction drawing extents are now located in an easy to access area, and in a convenient publicly facing location.  
+        <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Geometry Update</span></h6>
+          <p>Feature classes for three levels of boundaries were created in the geometry extraction process to perform geometry updates at three different 
+            stages. Before the update began, a feature class was created containing a row for each PDF file provided with the attributes extracted as 
+            fields and each row was assigned the same general polygon. The geometries of this feature class were then updated based on common values
+             identified in the feature classes that were selected to perform the update with. First, the update was done with the project boundary
+              feature classes, then the sub-project followed by the construction drawing boundary feature classes. Having the three stages of updates 
+              allowed the file polygons to be updated with a broad boundary representing the file and then be updated with a more specific boundary
+               if one existed.  
           </p>
 
           <div class="w3-center"> 
-            <img src="photos/storespatial.jpg" alt="Spatial Drawing" style="width:60%">
+            <img src="photos/GeometryUpdate.png" alt="Spatial Drawing" style="width:80%">
         </div>
 
-          <p><b>(3) </b>Develop a light weight and straightforward web application to query spatial data. Users can define a region of interest and are returned a list of related construction drawings with associated attributes.  
+        <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Geocortex Workflow 5</span></h6>
+          <p>We created two custom workflows using Geocortex Workflow 5 to facilitate these processes. The first creates a search form for the user to query the drawing layer of the map, and the second forms a URL to view the user's selected drawing.  
           </p>
 
           <div class="w3-center"> 
-            <img src="photos/geocort.png" alt="Web application" style="width:70%">
+            <img src="photos/Geocortexworkflow5.png" alt="Web application" style="width:40%">
         </div>
 
-          <p><b>(4) </b>Provide a comprehensive deliverable package for technical staff to follow workflows, author similar python scripts and publish their own web application. Initial data layers within one database, a final project report, a how-to document and all scripts will be included in the deliverable.  
-          </p>   
 
-          <div class="w3-center"> 
-            <img src="photos/deliverable.png" alt="Content Handover" style="width:60%">
+        <h6 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">Geocortex Web</span></h6>
+           <p>We designed and configured a web application in Geocortex Web 5 that allowed users to search and filter the construction drawings and then view them. The application references a web map created in ArcGIS Online.  
+            </p>
+            <div class="w3-center"> 
+            <img class="w3-padding-16" src="photos/geocort.png" alt="Content Handover" style="width:50%">
         </div>
 
-        </p>
+        
   
   
     </div>
   </div>
 
-<div class="w3-container" id="about">
-    <div class="w3-content" style="max-width:700px">
+<div class="w3-container" id="us">
+    <div class="w3-content" style="max-width:800px">
       <h5 class="w3-center w3-padding-64"><span class="w3-tag w3-wide">OUR TEAM</span></h5>
-      <h5><b>David Purdham </b>- <i>GIS Applications Specialist</i></h5>
+
+      <div class="w3-center"> 
+        <img src="photos/David.png" alt="Content Handover" style="width:47%">
+    </div>
+      <h5 class="w3-center"><b>David Purdham </b>- <i>GIS Applications Specialist</i></h5>
       <p> Background in Geography and Environmental Sustainability with work 
           experience using GIS in the public and private sectors. 
           Experience conducting spatial analyses such as site suitability, least-cost 
           path analysis and MCDA (Multi-criteria Decision Analysis) and using ArcGIS 
           applications to collect, manipulate and present data. </p>
+          <p class="w3-center"><i>Contact Information - - <a href="mailto:david.purdham@yahoo.com">Email</a> - - <a href="https://www.linkedin.com/in/david-purdham-94634712a/">LinkedIn</a></i></p>
 
-          <h5><b>Erik Oosterbaan </b>- <i>GIS Cartographic Specialist</i></h5>
+          <div class="w3-center"> 
+            <img src="photos/Erik.png" alt="Content Handover" style="width:45%">
+        </div>
+          <h5 class="w3-center"><b>Erik Oosterbaan </b>- <i>GIS Cartographic Specialist</i></h5>
           <p> Background in Business Administration with strong organizational and customer service skills. 
               GIS skills in cartographic representation, geovisualization, and web-based map and application 
               configuration focusing in the functionality and design of final product used by the public. </p>
+              <p class="w3-center"><i>Contact Information - - <a href="mailto:erikoosterbaan@gmail.com">Email</a> - - <a href="https://www.linkedin.com/in/erikoosterbaan/">LinkedIn</a></i></p>
 
-              <h5><b>Grayson Mortimer  </b>- <i>GIS Applications Specialist</i></h5>
+              <div class="w3-center"> 
+                <img src="photos/Grayson.png" alt="Content Handover" style="width:50%">
+            </div>
+              <h5 class="w3-center"><b>Grayson Mortimer  </b>- <i>GIS Applications Specialist</i></h5>
               <p> Currently working as a GIS Analyst supporting emergency management and operational 
                   decision-making for the Canadian Red Cross. Experience and skills cover, leveraging open 
                   data web services, programmatically scraping and translations of data, and user interface 
                   development in organizational web applications.  </p>
+                  <p class="w3-center"><i>Contact Information - - <a href="mailto:mortimergrayson@gmail.com">Email</a> - - <a href="https://www.linkedin.com/in/grayson-mortimer-93b956b4/">LinkedIn</a></i></p>
 
 
       
@@ -159,7 +200,7 @@ body, html {
 
     </div>
   <p>2021 - Fleming College Capstone Project - Spatial Drawings Search</p>
-  <a href="grmortim.github.io/2102YorkRegionConstructionDrawings/D1%5CPDF%2FD1-DWG-E-ITS-090306-001.pdf" target="_blank">PDF.</a>
+
 </footer>
 
 
